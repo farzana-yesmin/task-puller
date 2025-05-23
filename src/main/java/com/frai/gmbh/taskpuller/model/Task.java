@@ -1,9 +1,11 @@
 package com.frai.gmbh.taskpuller.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
 public class Task {
-    private String Id;
+    @JsonProperty("Id")
+    private String id;
     private String description;
 }
