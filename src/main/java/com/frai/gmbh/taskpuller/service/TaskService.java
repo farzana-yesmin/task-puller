@@ -28,6 +28,7 @@ public class TaskService {
     }
 
     public Task getTaskById(String id) throws IOException {
+
         validateUUID(id);
 
         Task cached = taskCache.get(id);
@@ -41,11 +42,16 @@ public class TaskService {
             throw new NoSuchFileException("Task file not found");
         }
 
-        Task task = objectMapper.readValue(file, Task.class);
+        Task task;
+        try {
+            task = objectMapper.readValue(file, Task.class);
+        } catch (IOException e) {
+            throw new IOException("Malformed JSON content", e);
+        }
+
         taskCache.put(id, task);
         return task;
     }
-
 
     private void validateUUID(String id) {
         try {
@@ -54,5 +60,4 @@ public class TaskService {
             throw new IllegalArgumentException("Invalid UUID format");
         }
     }
-
 }
